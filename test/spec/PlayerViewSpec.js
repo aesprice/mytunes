@@ -26,9 +26,11 @@ describe('PlayerView', function() {
   });
 
   it('gets its model property set to any song that is played', function(){
-    expect(appView.playerView.model).to.not.equal(library.at(0));
-    library.at(0).play();
-    expect(appView.playerView.model).to.equal(library.at(0));
+    var song = library.at(0);
+    expect(appView.playerView.model).to.not.equal(song);
+    appView.model.get('songQueue').addToQueue(song);
+    song.play();
+    expect(appView.playerView.model).to.equal(song);
   });
 
   describe('Song transitions', function() {
@@ -38,18 +40,21 @@ describe('PlayerView', function() {
         , thirdSong = library.at(2)
         , songQueue = appView.model.get('songQueue');
       // Set up a queue of three songs
-      songQueue.add(firstSong);
-      songQueue.add(secondSong);
-      songQueue.add(thirdSong);
+      songQueue.addToQueue(firstSong);
+      songQueue.addToQueue(secondSong);
+      songQueue.addToQueue(thirdSong);
       // play the first song
       songQueue.playFirst();
       expect(appView.playerView.model).to.equal(firstSong);
+      console.log('passed first test');
       // Simulate the end of the first song
       $(appView.playerView.el).trigger('ended');
       expect(appView.playerView.model).to.equal(secondSong);
+      console.log('passed second test');
       // Simulate the end of the second song
       $(appView.playerView.el).trigger('ended');
       expect(appView.playerView.model).to.equal(thirdSong);
+      console.log('passed third test');
     });
   });
 

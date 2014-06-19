@@ -23,7 +23,8 @@ describe('App', function() {
 
   it('sets the current song when a "play" event is fired', function(){
     expect(app.get('currentSong')).to.be.an('object');
-    app.get('library').at(0).play();
+    app.get('songQueue').addToQueue(app.get('library').at(0));
+    app.get('songQueue').at(0).play();
     expect(app.get('currentSong')).to.equal(app.get('library').at(0));
   });
 
